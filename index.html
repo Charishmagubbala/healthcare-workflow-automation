@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Healthcare Workflow Automation</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main class="container">
+  <header>
+    <h1>Healthcare Workflow Automation</h1>
+    <p>Demo application for routing appointment and business-process requests.</p>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  <section class="card">
+    <h2>Submit Request</h2>
+    <form method="post" action="{{ url_for('create_request') }}">
+      <label>Name</label>
+      <input name="name" placeholder="Demo Patient" required>
+      <label>Email</label>
+      <input type="email" name="email" placeholder="demo@example.com" required>
+      <label>Request / Notes</label>
+      <textarea name="notes" rows="5"
+        placeholder="Example: I need to reschedule my appointment to next week."
+        required></textarea>
+      <button type="submit">Process Workflow</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Workflow Dashboard</h2>
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Category</th><th>Priority</th>
+        <th>Team</th><th>Status</th><th>AI Summary</th></tr>
+      </thead>
+      <tbody>
+      {% for r in requests %}
+        <tr>
+          <td>{{ r.id }}</td>
+          <td>{{ r.patient_name }}</td>
+          <td>{{ r.category }}</td>
+          <td><span class="badge">{{ r.priority }}</span></td>
+          <td>{{ r.assigned_team or "-" }}</td>
+          <td>{{ r.status }}</td>
+          <td>{{ r.ai_summary }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7">No requests yet. Add a demo request above.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <footer>Educational demo — use synthetic data only.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+database/workflow.db
+.venv/
+.env
+.vscode/
